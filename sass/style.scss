@@ -1,0 +1,14 @@
+// Base Partials
+// @import "compass";
+// Layout Partials
+@import "partials/base/layout";
+@import "partials/base/colors";
+@import "partials/base/reset";
+@import "partials/base/typo";
+@import "partials/base/helpers";
+// @import "partials/base/pie";
+
+// Component Partials
+@import "partials/components/header";
+@import "partials/components/content";
+@import "partials/components/footer";

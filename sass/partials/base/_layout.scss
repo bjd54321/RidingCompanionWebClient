@@ -1,0 +1,86 @@
+// Layout Variables
+$flow: left !default;
+$content-width: 960px;
+$center: 0 auto;
+
+$desktop-only: "(min-width: 1026px)";
+$handheld: "(max-width: 1025px)";
+$tablets: "(max-width: 1025px) and (min-width: 641px)";
+$mobile: "(max-width: 640px)";
+
+@mixin content-wrapper{
+  width: $content-width;
+  margin: $center;
+  max-width: 100%;
+}
+
+// Box Sizing Mixin'
+@mixin box-sizing($box-model) {
+  -webkit-box-sizing: $box-model;
+  -moz-box-sizing: $box-model;
+  box-sizing: $box-model;
+}
+
+// Layout 'Grid' Mixin
+$opos: if($flow == left, right, left);
+@mixin layout($width, $position: false) {
+
+  @include box-sizing(border-box);
+
+  // Width (fraction/units)
+  @if not unitless($width){ // arbitrary width (e.g. px/%/em etc.).
+    width: $width;
+  }
+  @else if round($width) != $width { // fraction (e.g. 1/5).
+    width: 100% * $width;
+  }
+  @else { // just a fallback.
+    width: $width;
+  }
+
+  // Position (omega/row/fraction/columns/units)
+  @if $position != omega {
+    float: $flow; // normal float
+  }
+  @if $position == omega { // omega
+    float: $opos;
+  }
+
+  @else if $position == row { // row
+    clear: both;
+  }
+  @else if $position {
+    margin: {
+      #{$opos}: -100%;
+      @if not unitless($width) { // has unit, arbitrary width
+        #{$flow}: $position;
+      }
+      @else if round($position) != $position { // fraction
+        #{$flow}: $position * 100%;
+      }
+      @else { // fallback
+        #{$flow}: $position;
+      }
+    }
+  }
+}
+
+@function px2perc($px, $parent-width: $content-width){
+  @return ($px / $parent-width) * 100%;
+}
+
+@mixin layout-justify {
+  text-align: justify;
+
+  > * {
+    display: inline-block;
+  }
+
+  &:after {
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 0;
+    font-size: 0;
+  }
+}
